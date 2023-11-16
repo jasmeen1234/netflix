@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
-// import Card from "./Card";
+import Card from "./Card";
 export default React.memo(function CardSlider({ data, title }) {
   const listRef = useRef();
   const [sliderPosition, setSliderPosition] = useState(0);
@@ -35,9 +35,9 @@ export default React.memo(function CardSlider({ data, title }) {
           <AiOutlineLeft onClick={() => handleDirection("left")} />
         </div>
         <div className="slider flex" ref={listRef}>
-          {/* {data.map((movie, index) => {
+           {data.map((movie, index) => {
             return <Card movieData={movie} index={index} key={movie.id} />;
-          })} */}
+          })}
         </div>
         <div
           className={`slider-action right ${

@@ -1,16 +1,15 @@
-import React,{useState} from 'react'
-import styled from 'styled-components';
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
 } from "firebase/auth";
-
-import Header from '../components/Header'
-import {useNavigate} from 'react-router-dom';
-import Backgroundimage from '../components/Backgroundimage'
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import BackgroundImage from "../components/BackgroundImage";
+import Header from "../components/Header";
 import { firebaseAuth } from "../utils/firebase-config";
- export default function Signup() {
-  const [showpassword, setShowpassword]=useState(false);
+function Signup() {
+  const [showPassword, setShowPassword] = useState(false);
   const [formValues, setFormValues] = useState({
     email: "",
     password: "",
@@ -18,7 +17,6 @@ import { firebaseAuth } from "../utils/firebase-config";
   const navigate = useNavigate();
 
   const handleSignIn = async () => {
-    console.log(formValues);
     try {
       const { email, password } = formValues;
       await createUserWithEmailAndPassword(firebaseAuth, email, password);
@@ -26,35 +24,62 @@ import { firebaseAuth } from "../utils/firebase-config";
       console.log(error);
     }
   };
-  // onAuthStateChanged(firebaseAuth, (currentUser) => {
-  //   if (currentUser) navigate("/login");
-  // });
-  return(
-     <Container>
-    <Backgroundimage />
-    <div className="content">
-  <Header  login/>
-  <div className="body flex column a-center j-center">
-    <div className="text flex column">
-      <h1>Unlimited movies, TV shows and more</h1>
-      <h4>Watch anywhere, cancel anytime.</h4>
-      <h6>Ready to watch? Enter your email to create or restart membership</h6>
-    </div>
-    <div className='form'>
-      <input type="email" placeholder="Enter your Email" name="email" value={formValues.email} onChange={(e)=>setFormValues({...formValues,[e.target.name]:e.target.value})}/>
-      {showpassword &&( 
-      <input type="password" placeholder="password" name="password" value={formValues.password} onChange={(e)=>setFormValues({...formValues,[e.target.name]:e.target.value})}/>)}
-      {!showpassword &&
-       <button onClick={()=>setShowpassword(true)}>Get Started</button>}
-    </div>
-     {showpassword && <button onClick={handleSignIn}>Sign up</button>}
-    
-  </div>
-  </div>
-  </Container>
+
+  onAuthStateChanged(firebaseAuth, (currentUser) => {
+    if (currentUser) navigate("/");
+  });
+
+  return (
+    <Container showPassword={showPassword}>
+      <BackgroundImage />
+      <div className="content">
+        <Header login />
+        <div className="body flex column a-center j-center">
+          <div className="text flex column">
+            <h1>Unlimited movies, TV shows and more.</h1>
+            <h4>Watch anywhere. Cancel anytime.</h4>
+            <h6>
+              Ready to watch? Enter your email to create or restart membership.
+            </h6>
+          </div>
+          <div className="form">
+            <input
+              type="email"
+              placeholder="Email address"
+              onChange={(e) =>
+                setFormValues({
+                  ...formValues,
+                  [e.target.name]: e.target.value,
+                })
+              }
+              name="email"
+              value={formValues.email}
+            />
+            {showPassword && (
+              <input
+                type="password"
+                placeholder="Password"
+                onChange={(e) =>
+                  setFormValues({
+                    ...formValues,
+                    [e.target.name]: e.target.value,
+                  })
+                }
+                name="password"
+                value={formValues.password}
+              />
+            )}
+            {!showPassword && (
+              <button onClick={() => setShowPassword(true)}>Get Started</button>
+            )}
+          </div>
+          {showPassword && <button onClick={handleSignIn}>Log In</button>}
+        </div>
+      </div>
+    </Container>
   );
-    
 }
+
 const Container = styled.div`
   position: relative;
   .content {
@@ -114,3 +139,5 @@ const Container = styled.div`
     }
   }
 `;
+
+export default Signup;

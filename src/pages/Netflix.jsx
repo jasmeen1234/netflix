@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
-import backgroundimage from "../assets/home.jpg";
+import backgroundImage from "../assets/home.jpg";
 import MovieLogo from "../assets/homeTitle.webp";
 
 import { onAuthStateChanged } from "firebase/auth";
@@ -25,15 +25,15 @@ function Netflix() {
     dispatch(getGenres());
   }, []);
 
-   useEffect(() => {
-      if (genresLoaded) {
-       dispatch(fetchMovies({ genres, type: "all" }));
+  useEffect(() => {
+    if (genresLoaded) {
+      dispatch(fetchMovies({ genres, type: "all" }));
     }
   }, [genresLoaded]);
 
-  // onAuthStateChanged(firebaseAuth, (currentUser) => {
-  //   if (!currentUser) navigate("/login");
-  // });
+  onAuthStateChanged(firebaseAuth, (currentUser) => {
+    if (!currentUser) navigate("/login");
+  });
 
   window.onscroll = () => {
     setIsScrolled(window.pageYOffset === 0 ? false : true);
@@ -45,7 +45,7 @@ function Netflix() {
       <Navbar isScrolled={isScrolled} />
       <div className="hero">
         <img
-          src={backgroundimage}
+          src={backgroundImage}
           alt="background"
           className="background-image"
         />
